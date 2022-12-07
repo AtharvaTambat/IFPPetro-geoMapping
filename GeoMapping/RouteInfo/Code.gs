@@ -100,3 +100,18 @@ function ROUTETIME(start_address, end_address, travel_mode = "DRIVING", units = 
       return "INCORRECT TIME UNITS!!!"
   }
 }
+
+function SCORE(volume, distance, algorithm){
+  switch(algorithm){
+    case "LINEAR COMBINATION":
+    // The relative weights of volume and distance can be adjusted
+      var alpha = 50;
+      var beta = 50;
+      var sum = alpha + beta;
+      score = (alpha/sum)*volume + (beta/sum)*distance;
+      return score;
+      break;
+    default:
+      return "INCORRECT ALGORITHM!!!";
+  }
+}
