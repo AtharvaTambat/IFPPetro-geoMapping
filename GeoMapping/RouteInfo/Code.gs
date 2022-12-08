@@ -108,7 +108,7 @@ function SCORE(volume, distance, algorithm){
       var alpha = 50;
       var beta = 50;
       var sum = alpha + beta;
-      score = (alpha/sum)*volume + (beta/sum)*distance;
+      score = (alpha/sum)*volume + (beta/sum)*(1/distance);
       return score;
       break;
     default:
