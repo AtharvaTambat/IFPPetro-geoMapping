@@ -41,7 +41,7 @@ function App() {
 	}
   }
   return (
-	<div>
+	<div class="register_page">
 		<h2>Join IFP Petro Today!!!</h2>
 		<div class="container" id="container">
 			<div class="form-container sign-in-container">

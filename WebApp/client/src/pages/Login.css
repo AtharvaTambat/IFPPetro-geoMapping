@@ -4,7 +4,7 @@
 	box-sizing: border-box;
 }
 
-body {
+.login_page {
 	background: rgba(0, 128, 0, 0.3);
 	display: flex;
 	justify-content: center;
@@ -12,7 +12,6 @@ body {
 	flex-direction: column;
 	font-family: 'Montserrat', sans-serif;
 	height: 100vh;
-	margin: -20px 0 50px;
 }
 
 h1 {

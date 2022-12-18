@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import './Login.css';
+import './Login.css'
 
 function App() {
   const [email,setEmail] = useState('')
@@ -29,7 +29,7 @@ function App() {
   }
 
   return (
-	<div>
+	<div class="login_page">
 	<h2>Welcome Back :)</h2>
 		<div class="container" id="container">
 			<div class="form-container sign-in-container">
