@@ -15,6 +15,10 @@ function App() {
   const [zipcode,setZipCode] = useState('')
   const [country,setCountry] = useState('')
 
+  async function userSignIn(){
+	navigate('/login')
+  }
+
   async function registerUser(event){
     event.preventDefault()
 		const response = await fetch('http://localhost:1337/api/register', {
@@ -122,7 +126,7 @@ function App() {
 						/>
 						
 						<p>Already joint with us??</p>
-						<button  class="ghost" id="signIn">Sign In</button>					
+						<button  class="ghost" id="signIn" onClick={userSignIn}>Sign In</button>					
 					</div>
 				</div>
 			</div>
@@ -130,7 +134,6 @@ function App() {
     </div> 
   );
 }
-
 
 
 export default App;

@@ -1,5 +1,4 @@
 import React, { useEffect, useState,Component } from 'react';
-import jwt from 'jsonwebtoken'
 import { renderMatches, useNavigate } from 'react-router-dom'
 import './RecyclerDash.css';
 import $ from 'jquery';
@@ -7,17 +6,19 @@ import $ from 'jquery';
 
 const RecyclerDash = () => {
   const navigate = useNavigate()
-  var [date,setDate] = useState('')
   var [customer,setCompanyName] = useState('')
   var [customer_id,setContact] = useState('')
-  var [volume,setEmail] = useState('')
+  var [quantity,setEmail] = useState('')
+  var [packet_type,setEmail] = useState('')
+  var [category,setEmail] = useState('')
 
   var [requests, setObj] = useState([
     {
-      date: "",
-      customer: "",
       customer_id: "",
-      volume: "",
+      customer: "",
+      category: "",
+      packet_type: "",
+      quantity:"",
     },
   ]);
 
@@ -33,10 +34,11 @@ const RecyclerDash = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          date, 
-          customer,
           customer_id,
-          volume,
+          customer,
+          category,
+          packet_type,
+          quantity,
         }),
       })
       const data = await response.json()
@@ -56,11 +58,12 @@ const RecyclerDash = () => {
         var resultHtml = '';
         for(var i = 0 ; i < numRequests ; i++) {
             resultHtml += ["<tr>",
-            "<th scope=\"row\">",(i+1),"</th>",
+            "<th scope=\"row\">",requests[i].customer_id,"</th>",
             "<td>",requests[i].customer,"</td>",
-            "<td>",requests[i].customer_id,"</td>",
+            "<td>",requests[i].category,"</td>",
+            "<td>",requests[i].packet_type,"</td>",
             "<td><div><input class=\"form-check-input\" type=\"checkbox\" id=\"inlineCheckbox1\" value=\"option1\"></div></input></td>",
-            "<td>",requests[i].volume,"</td>",
+            "<td>",requests[i].quantity,"</td>",
           "</tr>"].join("\n");
         } 
         table.html(resultHtml);
@@ -78,15 +81,18 @@ const RecyclerDash = () => {
             console.log($(this).closest("tr")[0]); //debugging lines - remove later
             var row = $(this).closest("tr")[0];
             console.log(row.cells[1].innerHTML); //debugging lines - remove later
-            message += row.cells[1].innerHTML;
+            message += row.cells[0].innerHTML;
+            message += "   " + row.cells[1].innerHTML;
             message += "   " + row.cells[2].innerHTML;
-            message += "   " + row.cells[4].innerHTML;
+            message += "   " + row.cells[3].innerHTML;
+            message += "   " + row.cells[5].innerHTML;
             message += "\n";
 
-            date = "1";
+            customer_id = row.cells[0].innerHTML;
             customer = row.cells[1].innerHTML;
-            customer_id = row.cells[2].innerHTML;
-            volume = row.cells[4].innerHTML;
+            category = row.cells[2].innerHTML;
+            packet_type = row.cells[3].innerHTML;
+            quantity = row.cells[5].innerHTML;
 
             inputCollectionData();
             alert("row sent");
@@ -225,9 +231,10 @@ const RecyclerDash = () => {
           <table class="table" id="myTable">
           <thead>
             <tr>
-              <th scope="col">Date</th>
-              <th scope="col">Customer</th>
               <th scope="col">Customer ID</th>
+              <th scope="col">Customer</th>
+              <th scope="col">Category</th>
+              <th scope="col">Packet Type</th>
               <th scope="col">Collect</th>
               <th scope="col">Volume</th>
             </tr>

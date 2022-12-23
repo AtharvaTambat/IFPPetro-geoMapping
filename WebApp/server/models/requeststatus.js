@@ -1,10 +1,11 @@
 const mongoose = require('mongoose')
 
 const RequestStatus = new mongoose.Schema({
-    date: {type: String, required: true },
-    customer: {type: String, required: true },
-    customer_id:{type: String, required: true, unique: true},
-    volume: {type: String, required: true},
+    customer_id: {type: String, required: true, unique: true},
+    customer: {type: String, required: true},
+    category: {type: String, required: true },
+    packet_type: {type: String, required: true },
+    quantity:{type: String, required: true},
     }, 
     { collection: 'requeststatus' }
 )
