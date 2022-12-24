@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom' 
 import "./Login.css";
 
 function App() {
+  const navigate = useNavigate()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -26,17 +28,20 @@ function App() {
       alert("Please check your credentials and try again");
     }
   }
+  async function userSignUp(){
+    navigate('/register')
+    }
 
   return (
     <div class="login_page">
-      <h2>Welcome Back :)</h2>
+      <h2 id="headinglogin">Welcome Back :)</h2>
       <div class="container" id="container">
         <div class="form-container sign-in-container">
           <div class="overlay">
             <div class="overlay-panel overlay-right">
-              <h1>Hello, Friend!</h1>
+              <h1 class="message">Hello, Friend!</h1>
               <p>Enter your personal details and start journey with us</p>
-              <button class="ghost" id="signUp">
+              <button class="ghost" id="signUp" onClick={userSignUp}>
                 Sign Up
               </button>
             </div>
@@ -44,7 +49,7 @@ function App() {
         </div>
         <div class="overlay-container">
           <form on onSubmit={loginUser} action="#">
-            <h1>Sign In</h1>
+            <h1 id="signinheader">Sign In</h1>
             <span>
               To keep connected with us, please login with your personal info
             </span>
@@ -53,14 +58,16 @@ function App() {
               onChange={(e) => setEmail(e.target.value)}
               type="email"
               placeholder="Email"
+              class="input"
             />
             <input
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               type="password"
               placeholder="Password"
+              class="input"
             />
-            <button type="submit" value="Login">
+            <button type="submit" value="Login" id="signinbutton">
               Sign In
             </button>
           </form>

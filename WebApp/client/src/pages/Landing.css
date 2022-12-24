@@ -133,6 +133,8 @@ aside,
 footer,
 hgroup {
   display: block;
+  padding-left:60px;
+  padding-right:60px;
 }
 
 * {
@@ -1108,4 +1110,7 @@ preloader
   100% {
     opacity: 0;
   }
+}
+#contact{
+  padding-bottom:100px;
 }

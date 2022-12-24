@@ -16,8 +16,8 @@ const App = () => {
 		<div>
 			<BrowserRouter>
                 <Routes>
-                    <Route exact path="/landing" element={<Landing />}></Route>
-					<Route exact path="/" element={<Homepage />}></Route>
+                    {/* <Route exact path="/landing" element={<Landing />}></Route> */}
+					<Route exact path="/" element={<Landing />}></Route>
                     <Route exact path="/login" element={<Login />}></Route>
 				    <Route exact path="/register" element={<Register />}></Route>
                     <Route exact path="/userdashboard" element={<Dashboard />}></Route>

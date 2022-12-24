@@ -65,8 +65,7 @@ function Landing() {
               to grow up your <strong>business</strong>
             </h1>
             <p>
-              Softy Pinko is a professional Bootstrap 4.0 theme designed by
-              Template Mo for your company at absolutely free of charge
+            Are you looking for a Complete Oil Solution Provider? Schedule your oil management strategy right session now.
             </p>
             <a href="#features" className="main-button-slider">
               Discover More

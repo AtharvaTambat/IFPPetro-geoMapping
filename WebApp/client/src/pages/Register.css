@@ -23,7 +23,34 @@ h2 {
 	text-align: center;
     font-size: 50px;
 }
-
+#headingregister{
+	text-align: center;
+    font-size: 60px;
+	color: rgb(45, 41, 41);
+	padding-bottom: 35px;
+	font-family: 'Montserrat', sans-serif;
+	font-weight: bold;
+}
+.input{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+#signupheader{
+	font-weight: bold;
+	margin-bottom: 0px;
+}
+#signupbutton{
+	font-weight: bold;
+	margin-bottom: 0px;
+	margin-top: 10px;
+}
+#addressinfoheader{
+	font-weight: bold;
+	margin-bottom: 0px;
+}
+#message{
+	margin-top:10px;
+}
 p {
 	font-size: 14px;
 	font-weight: 100;
