@@ -8,13 +8,15 @@ import Logs from './pages/Logs';
 import Service from './pages/Service';
 import Profile from './pages/Profile';
 import RecyclerDash from './pages/RecyclerDash';
-import Dashboard from './pages/Dashboard'
+import Landing from './pages/Landing';
+import Dashboard from './pages/Dashboard';
 
 const App = () => {
 	return (
 		<div>
 			<BrowserRouter>
                 <Routes>
+                    <Route exact path="/landing" element={<Landing />}></Route>
 					<Route exact path="/" element={<Homepage />}></Route>
                     <Route exact path="/login" element={<Login />}></Route>
 				    <Route exact path="/register" element={<Register />}></Route>
