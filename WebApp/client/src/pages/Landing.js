@@ -31,10 +31,10 @@ function Landing() {
                   <a href="#contact">Contact</a>
                 </li>
 
-                <button id="bt1" className="btn" onClick={registerUser}>
+                <button className="btn" onClick={registerUser}>
                   Register
                 </button>
-                <button id="bt2" className="btn" onClick={loginUser}>
+                <button className="btn" onClick={loginUser}>
                   Log In
                 </button>
               </ul>
