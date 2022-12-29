@@ -26,7 +26,6 @@ const RecyclerDash = () => {
       var i = r.parentNode.parentNode.rowIndex;
       $(document).getElementById("myTable").deleteRow(i);
     }
-
     async function inputCollectionData(){
       const response = await fetch('http://localhost:1337/api/recyclerdash', {
         method: 'POST',
@@ -47,11 +46,15 @@ const RecyclerDash = () => {
         alert("Data sent successfully");
       }
     }
+    async function optimizeRoutes(){
+      requests = await fetch('http://localhost:1337/api/optimizeroutes').then((res) => res.json());;
+      console.log(requests['result']);
+    }
     async function collectRequestData(){
         requests = await fetch('http://localhost:1337/api/recyclerdash')
           .then((res) => res.json());
           // .then((jsonRes) => setObj(jsonRes));
-      console.log(requests);
+        console.log(requests);
       
         var table = $("#resultTable");
         var numRequests = requests.length;
@@ -69,8 +72,11 @@ const RecyclerDash = () => {
         table.html(resultHtml);
         return false; 
     } 
+
+
+
       $("#seeallbutton").on('click',function() {
-        collectRequestData()
+        collectRequestData();
       });
 
       $("#collectbutton").on("click",function(){
@@ -101,6 +107,7 @@ const RecyclerDash = () => {
         //Display selected Row data in Alert Box.
         if(message != "Collection Info\n"){
           alert(message);
+          optimizeRoutes();
           return true;
         }
         else{

@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
+const { spawn } = require('child_process');
 var router   =   express.Router();
 const mongoose = require('mongoose')
 const User = require('./models/user.model')
@@ -95,57 +96,46 @@ app.post('/api/userdashboard/orders', async (req,res) => {
     }
 })
 
+const executePython = async (script, args) => {
+    const arguments = args.map(arg => arg.toString());
+
+    const py = spawn("python3", [__dirname + script, ...arguments]);
+
+    const result = await new Promise((resolve, reject) => {
+        let output;
+
+        // Getting the result from the python script
+        py.stdout.on('data', (data) => {
+            output = JSON.parse(data);
+        });
+
+        // Handling errors
+        py.stderr.on("data", (data) => {
+            console.error(`[python] Error occured: ${data}`);
+            reject(`Error occured in ${script}`);
+        });
+
+        py.on("exit", (code) => {
+            console.log(`Child process exited with code: ${code}`);
+            resolve(output);
+        });
+    });
+    return result;
+}
+
+app.get('/api/optimizeroutes', async (req,res) => {
+    try{
+        const result = await executePython('/optimizeroutes.py',[5,50]); //MAX NUMBER OF AVAILABLE TRUCKS AND CAPACITY OF EACH TRUCK IS HARDCODED
+        res.json({result: result});
+    }
+    catch(error){
+        res.status(500).json({error: 'error'});
+    }
+});
+
 
 app.listen(1337, () => {
     console.log('server started on port 1337')
 })
-// app.get('/api/userdashboard', async (req, res) => {
-// 	const token = req.headers['x-access-token']
 
-// 	try {
-// 		const decoded = jwt.verify(token, 'secret123')
-// 		const email = decoded.email
-// 		const user = await User.findOne({ email: email })
-
-// 		return res.json({ status: 'ok', quote: user.quote })
-// 	} catch (error) {
-// 		console.log(error)
-// 		res.json({ status: 'error', error: 'invalid token' })
-// 	}
-// })
-
-// app.get('/api/orders', async (req, res) => {
-// 	const token = req.headers['x-access-token']
-
-// 	try {
-// 		const decoded = jwt.verify(token, 'secret123')
-// 		const email = decoded.email
-// 		const supplier = await Supplier.findOne({ email: email })
-
-// 		return res.json({ status: 'ok', quote: supplier.compname })
-// 	} catch (error) {
-// 		console.log(error)
-// 		res.json({ status: 'error', error: 'invalid token' })
-// 	}
-// })
-
-// app.post('/api/userdashboard', async (req,res) => {
-    
-//     const token = req.headers['x-access-token']
-
-//     try{
-//         const decoded = jwt.verify(token, 'secret123')
-//         const email = decoded.email
-//         await User.updateOne(
-//             { email: email }, 
-//             { $set: { quote: req.body.quote}}
-//         )
-
-//         return res.json({status: 'ok'})
-//     }
-//     catch(error){
-//         console.log(error)
-//         res.json({status: 'error', error: 'invalid token'})
-//     }
-// })
 

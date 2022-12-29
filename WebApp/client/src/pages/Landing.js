@@ -1,9 +1,11 @@
+import { useState } from 'react'
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Landing.css";
 
 function Landing() {
   const navigate = useNavigate();
+
   async function registerUser() {
     navigate("/register");
   }
@@ -13,7 +15,6 @@ function Landing() {
   return (
     <div>
       <header className="header-area header-sticky">
-        {/* <div className="container"> */}
         <div className="row">
           <div className="col-12">
             <nav className="main-nav">
@@ -31,10 +32,10 @@ function Landing() {
                   <a href="#contact">Contact</a>
                 </li>
 
-                <button className="btn" onClick={registerUser}>
+                <button id="bt1" className="btn" onClick={registerUser}>
                   Register
                 </button>
-                <button className="btn" onClick={loginUser}>
+                <button id="bt2" className="btn" onClick={loginUser}>
                   Log In
                 </button>
               </ul>
@@ -50,13 +51,6 @@ function Landing() {
       {/* ***** Welcome Area Start ***** */}
       <div className="welcome-area" id="welcome">
         {/* ***** Header Text Start ***** */}
-        {/* <div className="header-text">
-          <div className="container">
-            <div className="row">
-
-            </div>
-          </div>
-        </div> */}
         <div className="header-text">
           <div className="offset-xl-3 col-xl-6 offset-lg-2 col-lg-8 col-md-12 col-sm-12">
             <h1>
@@ -88,7 +82,7 @@ function Landing() {
                 <div className="features-small-item">
                   <div className="icon">
                     <i>
-                      <img id="feat" alt="" />
+                      <img id="feat" alt="" src="../assets/images/background_image2.JPG" />
                     </i>
                   </div>
                   <h5 className="features-title">Modern Strategy</h5>
@@ -140,7 +134,7 @@ function Landing() {
       {/* ***** Features Small End ***** */}
       {/* ***** Features Big Item Start ***** */}
       <section
-        className="section padding-top-70 padding-bottom-0"
+        className="section padding-top-200 padding-bottom-0"
         id="features"
       >
         <div className="container">
@@ -148,11 +142,13 @@ function Landing() {
             <div
               className="col-lg-5 col-md-12 col-sm-12 align-self-center left"
               data-scroll-reveal="enter left move 30px over 0.6s after 0.4s"
-            ></div>
+            >
+              <img src="../assets/images/logo.png" alt="Alternate"></img>
+            </div>
             <div className="col-lg-1" />
             <div className="col-lg-6 col-md-12 col-sm-12 align-self-center mobile-top-fix">
               <div className="left-heading">
-                <h2 className="section-title mt-3">About IFP Petro</h2>
+                <h2 className="section-title mt-3" id="aboutheader">About IFP Petro</h2>
               </div>
               <div className="left-text me-4 mt-1">
                 <p>
@@ -216,16 +212,15 @@ function Landing() {
       <br />
       <br />
       {/* ***** Features Big Item End ***** */}
-
       <section id="contact" className="contact">
         <div className="container" data-aos="fade-up">
-          <h2 className="mt-3 mb-3">Contact Us</h2>
+          <h2 className="mt-3 mb-3" id="contactusheader">Contact Us</h2>
           <div className="row gx-lg-0 gy-4">
             <div className="col-lg-4">
-              <div className="info-container d-flex flex-column align-items-center justify-content-center">
-                <div className="info-item d-flex">
-                  <i className="bi bi-geo-alt flex-shrink-0" />
-                  <div>
+              <div className="info-container d-flex flex-column align-items-left justify-content-center" class="infobox">
+                <div>
+                  <i/>
+                  <div class="infobox">
                     <h4>Location:</h4>
                     <p>
                       16/2C Industrial Area Site 4, Sahibabad, Ghaziabad -201010
@@ -234,24 +229,24 @@ function Landing() {
                   </div>
                 </div>
                 {/* End Info Item */}
-                <div className="info-item d-flex">
-                  <i className="bi bi-envelope flex-shrink-0" />
+                <div  class="infobox">
+                  <i />
                   <div>
-                    <h4>Email:</h4>
-                    <p>info@ifp-petro.com</p>
+                    <h4 >Email:</h4>
+                    <p >info@ifp-petro.com</p>
                   </div>
                 </div>
                 {/* End Info Item */}
-                <div className="info-item d-flex">
-                  <i className="bi bi-phone flex-shrink-0" />
+                <div class="infobox">
+                  <i />
                   <div>
                     <h4>Call:</h4>
                     <p>+01 2041 676 34</p>
                   </div>
                 </div>
                 {/* End Info Item */}
-                <div className="info-item d-flex">
-                  <i className="bi bi-clock flex-shrink-0" />
+                <div class="infobox">
+                  <i />
                   <div>
                     <h4>Open Hours:</h4>
                     <p>Mon-Sat: 11AM - 23PM</p>
@@ -262,10 +257,10 @@ function Landing() {
             </div>
             <div className="col-lg-8">
               <form
-                action="forms/contact.php"
-                method="post"
                 role="form"
                 className="php-email-form"
+                action="https://formspree.io/f/mrgvzngo"
+                method="POST"
               >
                 <div className="row">
                   <div className="col-md-6 form-group">
@@ -310,11 +305,8 @@ function Landing() {
                   />
                 </div>
                 <div className="my-3">
-                  <div className="loading">Loading</div>
-                  <div className="error-message" />
-                  <div className="sent-message">
-                    Your message has been sent. Thank you!
-                  </div>
+                  <div className="loading">In case of any doubts please feel free to contact us</div>
+                  
                 </div>
                 <div className="text-center">
                   <button type="submit">Send Message</button>
@@ -332,22 +324,22 @@ function Landing() {
           <div className="col-lg-12 col-md-12 col-sm-12">
             <ul className="social">
               <li>
-                <a href="#">
-                  <i className="fa fa-facebook" />
+                <a href="https://www.facebook.com/ifppetro/"  target="_blank">
+                  <i className="fab fa-facebook-f" />
                 </a>
               </li>
               <li>
-                <a href="#">
-                  <i className="fa fa-twitter" />
+                <a href="https://twitter.com/ifppetro"  target="_blank">
+                  <i className="fab fa-twitter" />
                 </a>
               </li>
               <li>
-                <a href="#">
-                  <i className="fa fa-linkedin" />
+                <a href="https://www.linkedin.com/company/ifp-petro/"  target="_blank">
+                  <i className="fab fa-linkedin" />
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="https://ifp-petro.com/sso/index.html"  target="_blank">
                   <i className="fa fa-rss" />
                 </a>
               </li>
