@@ -863,6 +863,7 @@ features
 --------------------------------------------- 
 */
 
+
 .features-small-item {
   cursor: pointer;
   display: block;
@@ -905,6 +906,10 @@ features
 .features-small-item .icon i {
   font-size: 18px;
   color: #fff;
+}
+
+#feat{
+  src: url(../assets/images/background_image2.JPG);
 }
 
 .features-small-item .features-title {
