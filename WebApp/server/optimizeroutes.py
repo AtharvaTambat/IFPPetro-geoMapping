@@ -8,14 +8,25 @@ import gmaps
 import googlemaps
 import matplotlib.pyplot as plt
 import time
+from geopy import distance
 pd.options.mode.chained_assignment = None  # default='warn'
 
-'''API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY'
-gmaps.configure(api_key=API_KEY)
-googlemaps = googlemaps.Client(key=API_KEY)'''
+from geopy.geocoders import Nominatim
+geocoder = Nominatim(user_agent = 'IFP_WebApp')
+
+from geopy.extra.rate_limiter import RateLimiter
+geocode = RateLimiter(geocoder.geocode, min_delay_seconds = 1,   return_value_on_exception = None) 
+# adding 1 second padding between calls
+
+# The program accepts address list in the following manner
+# address_depot#address1#address2 etc.
+address_list = sys.argv[3].split('#')
+
+# Inputs a string of volumes of used oil to be picked up from each location except the depot
+volume_list = sys.argv[4].split('#')
 
 # customer count ('0' is depot) 
-customer_count = 10
+customer_count = len(address_list)  # saves the number of locations
 
 # the number of vehicle
 vehicle_count = int(sys.argv[1])
@@ -26,20 +37,25 @@ vehicle_capacity = int(sys.argv[2])
 # fix random seed
 np.random.seed(seed=779)
 
-# set depot latitude and longitude
-depot_latitude = 30.748817
-depot_longitude = -67.985428
+latitude_list = []
+longitude_list = []
 
+for i in range(customer_count):
+    # after initiating geocoder
+    location = geocode(address_list[i])
+    # returns location object with longitude, latitude and altitude instances
+    latitude_list.append(location.latitude)
+    longitude_list.append(location.longitude)
+
+volume_list = ['0'] + volume_list # set volume of the deopt to 0
+# print(address_list)
+# print(volume_list)
 # make dataframe which contains vending machine location and demand
-df = pd.DataFrame({"latitude":np.random.normal(depot_latitude, 0.007, customer_count), 
-                   "longitude":np.random.normal(depot_longitude, 0.007, customer_count), 
-                   "demand":np.random.randint(10, 20, customer_count)})
-
-
-# set the depot as the center and make demand 0 ('0' = depot)
-df.iloc[0,0] = depot_latitude
-df.iloc[0,1] = depot_longitude
-df.iloc[0,2] = 0
+df_list = [latitude_list, longitude_list, volume_list]
+df = pd.DataFrame (df_list).transpose()
+df.columns = ['latitude', 'longitude', 'demand']
+df['demand'] = pd.to_numeric(df['demand'], errors='coerce')
+# print (df)
 
 # function for plotting on google maps
 def _plot_on_gmaps(_df):
@@ -64,14 +80,8 @@ def _distance_calculator(_df):
     
     for i in range(len(_df)):
         for j in range(len(_df)):
-            
-            # calculate distance of all pairs
-            '''_google_maps_api_result = googlemaps.directions(_df['latitude-longitude'].iloc[i],
-                                                            _df['latitude-longitude'].iloc[j],
-                                                            mode = 'driving')'''
-            # append distance to result list
-            '''_distance_result[i][j] = _google_maps_api_result[0]['legs'][0]['distance']['value']'''
-            _distance_result[i][j] = math.sqrt((_df.latitude[i] - _df.latitude[j])**2 + (_df.longitude[i] - _df.longitude[j])**2)
+            # Currently calculates the shortest distance along the surface of earth
+            _distance_result[i][j] = distance.distance((_df.latitude[i],_df.longitude[i]),(_df.latitude[j], _df.longitude[j])).km
     
     return _distance_result
 
