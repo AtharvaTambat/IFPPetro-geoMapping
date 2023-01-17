@@ -1,9 +1,7 @@
-import { useState } from "react";
+import { useState } from 'react'
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Landing.css";
-import pic from "../assets/images/logo.png";
-import vector from "../assets/images/modern_strategy.JPG";
 
 function Landing() {
   const navigate = useNavigate();
@@ -61,8 +59,7 @@ function Landing() {
               to grow up your <strong>business</strong>
             </h1>
             <p>
-              Are you looking for a Complete Oil Solution Provider? Schedule
-              your oil management strategy right session now.
+            Are you looking for a Complete Oil Solution Provider? Schedule your oil management strategy right session now.
             </p>
             <a href="#features" className="main-button-slider">
               Discover More
@@ -83,13 +80,16 @@ function Landing() {
                 data-scroll-reveal="enter bottom move 50px over 0.6s after 0.2s"
               >
                 <div className="features-small-item">
+                  <div className="icon">
+                    <i>
+                      <img id="feat" alt="" src="../assets/images/background_image2.JPG" />
+                    </i>
+                  </div>
                   <h5 className="features-title">Modern Strategy</h5>
                   <p>
                     Customize anything in this template to fit your website
                     needs
                   </p>
-                  <div>
-                  </div>
                 </div>
               </div>
               {/* ***** Features Small Item End ***** */}
@@ -99,6 +99,11 @@ function Landing() {
                 data-scroll-reveal="enter bottom move 50px over 0.6s after 0.4s"
               >
                 <div className="features-small-item">
+                  <div className="icon">
+                    <i>
+                      <img id="feat" alt="" />
+                    </i>
+                  </div>
                   <h5 className="features-title">Best Relationship</h5>
                   <p>Contact us immediately if you have a question in mind</p>
                 </div>
@@ -110,6 +115,11 @@ function Landing() {
                 data-scroll-reveal="enter bottom move 50px over 0.6s after 0.6s"
               >
                 <div className="features-small-item">
+                  <div className="icon">
+                    <i>
+                      <img id="feat" alt="" />
+                    </i>
+                  </div>
                   <h5 className="features-title">Ultimate Marketing</h5>
                   <p>
                     You just need to tell your friends about our free templates
@@ -130,17 +140,15 @@ function Landing() {
         <div className="container">
           <div className="row">
             <div
-              className="col-lg-5 col-md-12 col-sm-12 align-self-center left feature"
+              className="col-lg-5 col-md-12 col-sm-12 align-self-center left"
               data-scroll-reveal="enter left move 30px over 0.6s after 0.4s"
             >
-              <img src={pic} />
+              <img src="../assets/images/logo.png" alt="Alternate"></img>
             </div>
             <div className="col-lg-1" />
             <div className="col-lg-6 col-md-12 col-sm-12 align-self-center mobile-top-fix">
               <div className="left-heading">
-                <h2 className="section-title mt-3" id="aboutheader">
-                  About IFP Petro
-                </h2>
+                <h2 className="section-title mt-3" id="aboutheader">About IFP Petro</h2>
               </div>
               <div className="left-text me-4 mt-1">
                 <p>
@@ -206,17 +214,12 @@ function Landing() {
       {/* ***** Features Big Item End ***** */}
       <section id="contact" className="contact">
         <div className="container" data-aos="fade-up">
-          <h2 className="mt-3 mb-3" id="contactusheader">
-            Contact Us
-          </h2>
+          <h2 className="mt-3 mb-3" id="contactusheader">Contact Us</h2>
           <div className="row gx-lg-0 gy-4">
             <div className="col-lg-4">
-              <div
-                className="info-container d-flex flex-column align-items-left justify-content-center"
-                class="infobox"
-              >
+              <div className="info-container d-flex flex-column align-items-left justify-content-center" class="infobox">
                 <div>
-                  <i />
+                  <i/>
                   <div class="infobox">
                     <h4>Location:</h4>
                     <p>
@@ -226,11 +229,11 @@ function Landing() {
                   </div>
                 </div>
                 {/* End Info Item */}
-                <div class="infobox">
+                <div  class="infobox">
                   <i />
                   <div>
-                    <h4>Email:</h4>
-                    <p>info@ifp-petro.com</p>
+                    <h4 >Email:</h4>
+                    <p >info@ifp-petro.com</p>
                   </div>
                 </div>
                 {/* End Info Item */}
@@ -302,9 +305,8 @@ function Landing() {
                   />
                 </div>
                 <div className="my-3">
-                  <div className="loading">
-                    In case of any doubts please feel free to contact us
-                  </div>
+                  <div className="loading">In case of any doubts please feel free to contact us</div>
+                  
                 </div>
                 <div className="text-center">
                   <button type="submit">Send Message</button>
@@ -322,25 +324,22 @@ function Landing() {
           <div className="col-lg-12 col-md-12 col-sm-12">
             <ul className="social">
               <li>
-                <a href="https://www.facebook.com/ifppetro/" target="_blank">
+                <a href="https://www.facebook.com/ifppetro/"  target="_blank">
                   <i className="fab fa-facebook-f" />
                 </a>
               </li>
               <li>
-                <a href="https://twitter.com/ifppetro" target="_blank">
+                <a href="https://twitter.com/ifppetro"  target="_blank">
                   <i className="fab fa-twitter" />
                 </a>
               </li>
               <li>
-                <a
-                  href="https://www.linkedin.com/company/ifp-petro/"
-                  target="_blank"
-                >
+                <a href="https://www.linkedin.com/company/ifp-petro/"  target="_blank">
                   <i className="fab fa-linkedin" />
                 </a>
               </li>
               <li>
-                <a href="https://ifp-petro.com/sso/index.html" target="_blank">
+                <a href="https://ifp-petro.com/sso/index.html"  target="_blank">
                   <i className="fa fa-rss" />
                 </a>
               </li>

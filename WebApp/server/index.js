@@ -13,7 +13,21 @@ const bcrypt = require('bcryptjs');
 app.use(cors())
 app.use(express.json())
 
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "OPTIONS, GET, POST, PUT, PATCH, DELETE"
+    );
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    if (req.method === "OPTIONS") {
+      return res.sendStatus(200);
+    }
+    next();
+  });
+
 mongoose.connect('mongodb://localhost:27017/ifp-petro-webapp')
+var IFPaddress = "Ghaziabad, Uttar Pradesh, India"
 
 app.post('/api/register', async (req,res) => {
     console.log(req.body)
@@ -25,7 +39,7 @@ app.post('/api/register', async (req,res) => {
             contact: req.body.contact,
             email: req.body.email,
             password: newPassword,
-            address: req.body.street +", "+ req.body.city +", "+ req.body.state +", "+ req.body.zipcode +", "+req.body.country,
+            address: req.body.compname + ", " + req.body.city +", "+ req.body.state +", "+ req.body.zipcode +", "+req.body.country,
         })
         res.json({status: 'ok'})
     }
@@ -125,12 +139,32 @@ const executePython = async (script, args) => {
 
 app.get('/api/optimizeroutes', async (req,res) => {
     try{
-        const result = await executePython('/optimizeroutes.py',[5,50]); //MAX NUMBER OF AVAILABLE TRUCKS AND CAPACITY OF EACH TRUCK IS HARDCODED
+        var query = await CollectionStatus.find({});
+        console.log("OPTIMIZING ROUTES");
+        var address_list = "";
+        var volume_list = "";
+
+        for (let i = 0; i < query.length-1; i++) {
+            var address_string = await User.find({'name' : query[i].customer});
+            console.log( query[i].customer);
+            address_list+=address_string[0].address + "#";
+            volume_list+=query[i].quantity + "#";
+        }
+        var address_string = await User.find({'name' : query[query.length-1].customer});
+        address_list+=address_string[0].address;
+        volume_list+=query[query.length-1].quantity;
+
+        address_list = IFPaddress + "#" + address_list; // Adding depot address
+
+        console.log(address_list);
+        console.log(volume_list);
+
+        const result = await executePython('/optimizeroutes.py',[5,50,address_list, volume_list]); //MAX NUMBER OF AVAILABLE TRUCKS AND CAPACITY OF EACH TRUCK IS HARDCODED
         res.json({result: result});
     }
     catch(error){
         res.status(500).json({error: 'error'});
-    }
+    }    
 });
 
 

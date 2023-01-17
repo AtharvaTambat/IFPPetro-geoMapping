@@ -1,7 +1,29 @@
 import React, { useEffect, useState,Component } from 'react';
-import { renderMatches, useNavigate } from 'react-router-dom'
+import { matchPath, renderMatches, useNavigate } from 'react-router-dom'
 import './RecyclerDash.css';
 import $ from 'jquery';
+// import Map from 'ol/Map.js';
+// import View from 'ol/View.js';
+// import OSM from 'ol/source/OSM.js';
+// import TileLayer from 'ol/layer/Tile.js';
+import LineString from 'ol/geom/LineString.js';
+import {useGeographic} from 'ol/proj';
+import {Feature, Map, Overlay, View} from 'ol/index.js';
+import {OSM, Vector as VectorSource} from 'ol/source.js';
+import {Point} from 'ol/geom.js';
+import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer.js';
+import Polyline from 'ol/format/Polyline.js';
+import XYZ from 'ol/source/XYZ.js';
+import {
+  Fill,
+  Icon,
+  Stroke,
+  Style,
+} from 'ol/style.js';
+import CircleStyle from 'ol/style/Circle.js';
+import {getVectorContext} from 'ol/render.js';
+
+
 
 
 const RecyclerDash = () => {
@@ -21,11 +43,43 @@ const RecyclerDash = () => {
       quantity:"",
     },
   ]);
+  useGeographic();
+  const key = 'v5L7a7Did04C5HGREKwC';
+  const attributions =
+  '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> ' +
+  '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
+  const point = new Point([77.373000,28.669930]) // Location of IFP Petro
+  if (!$('#map').html()) {
+    var map = new Map({
+      layers: [
+        new TileLayer({
+          source: new XYZ({
+            attributions: attributions,
+            url: 'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=' + key,
+            tileSize: 512,
+          }),
+        }),
+      ],
+      target: 'map',
+      view: new View({
+        center: [77.373000,28.669930],
+        zoom: 5
+      })
+    });
+ }    
 
     function deleterow(r) {
       var i = r.parentNode.parentNode.rowIndex;
       $(document).getElementById("myTable").deleteRow(i);
     }
+
+    //The ColorCode() will give the code every time.
+   function ColorCode() {
+      var r = Math.floor(Math.random() * 255);
+      var g = Math.floor(Math.random() * 255);
+      var b = Math.floor(Math.random() * 255);
+      return (r + "," + g + "," + b);
+  }
     async function inputCollectionData(){
       const response = await fetch('http://localhost:1337/api/recyclerdash', {
         method: 'POST',
@@ -49,7 +103,70 @@ const RecyclerDash = () => {
     async function optimizeRoutes(){
       requests = await fetch('http://localhost:1337/api/optimizeroutes').then((res) => res.json());;
       console.log(requests['result']);
+      const loc_array = requests['result']['route'].split("#");
+      console.log(loc_array)
+
+      console.log("I HAVE OPTIMIZED ROUTES, NOW DISPLAYING MAPS")
+
+      let truck_num = 0;
+      let loc;
+      for(let i = 0;i<loc_array.length;){
+        console.log("truck_num" + truck_num)
+        console.log("i = " + i)
+        var features = [];
+        if(i==0){
+           loc = loc_array[i].split(",");
+        }
+        while(parseInt(loc[2]) == truck_num){
+          console.log(loc);
+          var marker = new Feature({
+            geometry: new Point([parseFloat(loc[0]), parseFloat(loc[1])]),
+          });
+          console.log(marker);
+          features.push(marker);
+          console.log(features);
+          i=i+1;
+          if(i<loc_array.length){
+            loc = loc_array[i].split(",");
+          }
+          
+          //displaying it in a layer
+          var color = ColorCode()
+          var style = new Style({
+              image: new CircleStyle({
+                  fill: new Fill({
+                      color: 'rgba(' + color + ',0.8)'
+                  }),
+                  stroke: new Stroke({
+                      width: 10,
+                      color: 'rgba(' + color + ',0.2)'
+                  }),
+                  radius: 7
+              }),
+          });
+
+          // Adding a new layer
+          var vectorLayer = new VectorLayer({
+            title: 'POI',
+            source: new VectorSource({
+              features: features
+            }),
+            style: style,
+          });
+          console.log(vectorLayer);
+          map.addLayer(vectorLayer);
+          map.render();
+          if(i>=loc_array.length){
+            break;
+          }
+        }
+        console.log("I am out f loop");
+        truck_num=truck_num+1;
+        console.log(features);
+      }  
     }
+
+
     async function collectRequestData(){
         requests = await fetch('http://localhost:1337/api/recyclerdash')
           .then((res) => res.json());
@@ -72,8 +189,6 @@ const RecyclerDash = () => {
         table.html(resultHtml);
         return false; 
     } 
-
-
 
       $("#seeallbutton").on('click',function() {
         collectRequestData();
@@ -122,7 +237,6 @@ const RecyclerDash = () => {
         });
       });
 
-  
     return(
         <div>
   <div class="sidebar">
@@ -257,8 +371,9 @@ const RecyclerDash = () => {
           </div>       
         </div>
         
-        <div class="top-sales box">
-        </div>
+        {/* <div class="top-sales box"> */}
+        <script src="https://cdn.jsdelivr.net/npm/elm-pep@1.0.6/dist/elm-pep.js"></script>
+        <div id="map" class="map" onload="initializemap()"></div>
       </div>
     </div>
   </section>
@@ -267,3 +382,89 @@ const RecyclerDash = () => {
     )
 }
 export default RecyclerDash
+
+// async function displayRoutes(){
+  //   // The polyline string is read from a JSON similiar to those returned
+  // // by directions APIs such as Openrouteservice and Mapbox.
+  
+  // const api_key = 'fcf0bf0f-f793-483a-a30c-96102e409118';
+  // const startLonLat = [77.373000,28.669930];
+  // const endLonLat = [72.83333,18.96667];
+  
+  // await fetch('https://graphhopper.com/api/1/route' +
+  // '?point=' + startLonLat.slice().reverse().join(',') +
+  // '&point=' + endLonLat.slice().reverse().join(',') +
+  // '&type=json&key=' + api_key +
+  // '&profile=car').then(function (response) {
+  // response.json().then(function (result) {
+  //   const polyline = result.paths[0].points;
+  //   // const polyline = result.routes[0].geometry;
+  //   console.log("DATA FETCHED")
+  //   console.log(polyline)
+  
+  //   const route = new Polyline({
+  //     factor: 1e6,
+  //   }).readGeometry(polyline);
+  //   console.log(route);
+  
+  //   const routeFeature = new Feature({
+  //     type: 'route',
+  //     geometry: route,
+  //   });
+  //   const startMarker = new Feature({
+  //     type: 'icon',
+  //     geometry: new Point(route.getFirstCoordinate()),
+  //   });
+  //   const endMarker = new Feature({
+  //     type: 'icon',
+  //     geometry: new Point(route.getLastCoordinate()),
+  //   });
+  //   const position = startMarker.getGeometry().clone();
+  //   const geoMarker = new Feature({
+  //     type: 'geoMarker',
+  //     geometry: position,
+  //   });
+  
+  //   const styles = {
+  //     'route': new Style({
+  //       stroke: new Stroke({
+  //         width: 100000,
+  //         color: [237, 212, 0, 1],
+  //       }),
+  //     }),
+  //     // 'icon': new Style({
+  //     //   image: new Icon({
+  //     //     anchor: [0.5, 1],
+  //     //     src: 'data/icon.png',
+  //     //   }),
+  //     // }),
+  //     'geoMarker': new Style({
+  //       image: new CircleStyle({
+  //         radius: 7,
+  //         fill: new Fill({color: 'black'}),
+  //         stroke: new Stroke({
+  //           color: 'white',
+  //           width: 2,
+  //         }),
+  //       }),
+  //     }),
+  //   };
+  //   console.log("STYLES DONE")
+  
+  //   const vectorLayer = new VectorLayer({
+  //     source: new VectorSource({
+  //       features: [routeFeature, geoMarker, startMarker, endMarker],
+  //     }),
+  //     style: function (feature) {
+  //       return styles[feature.get('type')];
+  //     },
+  //   });
+  
+  //   map.addLayer(vectorLayer);
+  //   console.log("Adding Layer");
+  //   map.render();
+  //   });
+  
+  // });
+  // }
+    

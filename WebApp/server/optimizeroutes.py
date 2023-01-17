@@ -21,10 +21,10 @@ geocode = RateLimiter(geocoder.geocode, min_delay_seconds = 1,   return_value_on
 # The program accepts address list in the following manner
 # address_depot#address1#address2 etc.
 address_list = sys.argv[3].split('#')
-
+# print(address_list)
 # Inputs a string of volumes of used oil to be picked up from each location except the depot
 volume_list = sys.argv[4].split('#')
-
+# print(volume_list)
 # customer count ('0' is depot) 
 customer_count = len(address_list)  # saves the number of locations
 
@@ -153,6 +153,7 @@ for vehicle_count in range(1,vehicle_count+1):
                 plt.text(df.latitude[i], df.longitude[i], str(df.demand[i]), fontsize=12)
 
         l = []
+        routes = []
         for i in range(0, vehicle_count+1):
             l.append(tuple(np.random.choice(range(0, 2), size=3)))
 
@@ -161,10 +162,16 @@ for vehicle_count in range(1,vehicle_count+1):
                 for j in range(customer_count):
                     if i != j and pulp.value(x[i][j][k]) == 1:
                         plt.plot([df.latitude[i], df.latitude[j]], [df.longitude[i], df.longitude[j]], c=l[k])
+                        if(str(df.longitude[i])+","+ str(df.latitude[i])+ "," + str(k) not in routes and i!=0):
+                            routes.append(str(df.longitude[i])+","+ str(df.latitude[i])+ "," + str(k))
+
+                        if(str(df.longitude[j])+","+ str(df.latitude[j])+ "," + str(k) not in routes and j!=0):
+                            routes.append(str(df.longitude[j])+","+ str(df.latitude[j])+ "," + str(k))
+        routes = '#'.join(routes)
         
         plt.savefig("optimizedroutes.jpg")
 
-        print('{','\"trucks\":', vehicle_count,",",'\"distance\":', pulp.value(problem.objective),'}')
+        print('{','\"trucks\":', vehicle_count,",",'\"distance\":', pulp.value(problem.objective),', \"route\": \"'+ routes+'\"}')
         break
 
 sys.stdout.flush()
